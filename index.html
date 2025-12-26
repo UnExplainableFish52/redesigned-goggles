@@ -1,6 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux Mastery Course · Dark Theme</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Highlight.js for bash syntax coloring -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/tomorrow-night.min.css">
+    <style>
+        :root {
+            --bg: #0E0E0E;
+            --bg-alt: #141414;
+            --card: #1A1A1A;
+            --muted: #888888;
+            --text: #EDEDED;
+            --accent: #98C379;
+            --accent-2: #61AFEF;
+            --keyword: #E5C07B;
+            --variable: #C678DD;
+            --string: #98C379;
+            --number: #56B6C2;
+            --comment: #5A5A5A;
+            --error: #E06C75;
+            --border: #2A2A2A;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --radius: 12px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+            font-weight: 500;
+            line-height: 1.75;
+            letter-spacing: 0.01em;
+            padding: 40px 20px 60px;
+        }
+
+        .page { max-width: 1000px; margin: 0 auto; }
+
+        .hero {
+            position: relative;
+            padding: 32px;
+            border-radius: var(--radius);
+            background: linear-gradient(135deg, rgba(97, 175, 239, 0.1) 0%, rgba(152, 195, 121, 0.08) 100%);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            margin-bottom: 32px;
+        }
+
+        .hero-title {
+            margin: 0 0 12px;
+            font-weight: 800;
+            font-size: 38px;
+            letter-spacing: -0.02em;
+            color: #FFFFFF;
+        }
+
+        .hero-subtitle {
+            margin: 0 0 20px;
+            color: var(--muted);
+            max-width: 700px;
+            font-size: 17px;
+            font-weight: 400;
+        }
+
+        .pill-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+        .pill {
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+        .stat {
+            padding: 16px;
+            border-radius: var(--radius);
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+        }
+        .stat-label { color: var(--muted); font-size: 13px; font-weight: 500; margin: 0 0 4px; }
+        .stat-value { margin: 0; font-size: 20px; font-weight: 700; color: #FFFFFF; }
+
+        .card {
+            padding: 32px;
+            border-radius: var(--radius);
+            background: var(--card);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+        .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+        .toolbar .hint { color: var(--muted); font-size: 13px; }
+
+        .markdown { color: var(--text); font-size: 16px; font-weight: 500; }
+        .markdown h1, .markdown h2, .markdown h3, .markdown h4, .markdown h5, .markdown h6 {
+            color: #FFFFFF;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            margin-top: 36px;
+            margin-bottom: 16px;
+        }
+
+        .markdown h1 { font-size: 32px; border-bottom: 2px solid var(--border); padding-bottom: 12px; }
+        .markdown h2 { font-size: 26px; color: var(--accent-2); }
+        .markdown h3 { font-size: 22px; color: var(--keyword); }
+        .markdown h4 { font-size: 18px; }
+
+        .markdown p { margin: 14px 0; color: var(--text); }
+        .markdown strong { color: #FFFFFF; font-weight: 700; }
+        .markdown em { color: var(--variable); font-style: italic; }
+        .markdown a { color: var(--accent-2); text-decoration: none; font-weight: 600; }
+        .markdown a:hover { text-decoration: underline; }
+
+        .markdown blockquote {
+            margin: 20px 0;
+            padding: 16px 20px;
+            border-left: 4px solid var(--accent);
+            background: rgba(152, 195, 121, 0.08);
+            color: var(--text);
+            border-radius: 0 var(--radius) var(--radius) 0;
+            font-weight: 500;
+        }
+
+        .markdown code {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-family: "JetBrains Mono", "Fira Code", monospace;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--accent);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .markdown pre {
+            background: #0A0A0A;
+            padding: 20px;
+            border-radius: var(--radius);
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            margin: 20px 0;
+        }
+
+        .markdown pre code {
+            background: transparent;
+            padding: 0;
+            border: none;
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Bash syntax highlighting overrides - SUPER COLORFUL */
+        .hljs { background: transparent !important; color: var(--text) !important; }
+        .hljs-keyword { color: #E5C07B !important; font-weight: 700; }
+        .hljs-built_in { color: #61AFEF !important; font-weight: 700; }
+        .hljs-string { color: #98C379 !important; font-weight: 600; }
+        .hljs-variable { color: #C678DD !important; font-weight: 600; }
+        .hljs-number { color: #56B6C2 !important; font-weight: 600; }
+        .hljs-comment { color: #5A5A5A !important; font-style: italic; }
+        .hljs-function { color: #61AFEF !important; font-weight: 700; }
+        .hljs-title { color: #61AFEF !important; font-weight: 700; }
+        .hljs-params { color: #E06C75 !important; font-weight: 600; }
+        .hljs-attr { color: #E5C07B !important; font-weight: 600; }
+        .hljs-literal { color: #56B6C2 !important; font-weight: 600; }
+        .hljs-symbol { color: #C678DD !important; font-weight: 600; }
+        .hljs-meta { color: #E06C75 !important; font-weight: 600; }
+        .hljs-meta .hljs-keyword { color: #E06C75 !important; }
+        .hljs-meta .hljs-string { color: #98C379 !important; }
+        /* Shell prompt and operators */
+        .hljs-doctag { color: #E5C07B !important; font-weight: 700; }
+        .hljs-selector-tag { color: #E06C75 !important; font-weight: 700; }
+        .hljs-selector-class { color: #E5C07B !important; }
+        .hljs-selector-id { color: #61AFEF !important; }
+        .hljs-subst { color: #C678DD !important; }
+        .hljs-section { color: #61AFEF !important; font-weight: 700; }
+        .hljs-link { color: #56B6C2 !important; }
+        .hljs-regexp { color: #56B6C2 !important; }
+        .hljs-deletion { color: #E06C75 !important; background: rgba(224, 108, 117, 0.15); }
+        .hljs-addition { color: #98C379 !important; background: rgba(152, 195, 121, 0.15); }
+        .hljs-emphasis { font-style: italic; }
+        .hljs-strong { font-weight: 700; }
+        .hljs-type { color: #56B6C2 !important; font-weight: 600; }
+        .hljs-class { color: #E5C07B !important; }
+        .hljs-name { color: #E06C75 !important; font-weight: 600; }
+        .hljs-attribute { color: #E5C07B !important; }
+        .hljs-property { color: #61AFEF !important; }
+        /* Shebang and special */
+        .hljs-shebang { color: #5A5A5A !important; font-style: italic; }
+        .hljs-operator { color: #56B6C2 !important; font-weight: 700; }
+        .hljs-punctuation { color: #ABB2BF !important; }
+
+        .markdown table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .markdown th, .markdown td {
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            text-align: left;
+            color: var(--text);
+        }
+        .markdown th {
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+        .markdown tr:nth-child(even) td { background: rgba(255, 255, 255, 0.02); }
+
+        .markdown ul, .markdown ol { padding-left: 24px; margin: 14px 0; }
+        .markdown li { margin: 8px 0; }
+        .markdown li::marker { color: var(--accent); }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: rgba(97, 175, 239, 0.15);
+            border: 1px solid rgba(97, 175, 239, 0.3);
+            color: var(--accent-2);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .muted { color: var(--muted); }
+
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--muted);
+            font-size: 13px;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .github-link:hover { color: var(--text); }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--muted);
+            font-size: 14px;
+        }
+        .footer a { color: var(--accent-2); }
+
+        @media (max-width: 768px) {
+            body { padding: 20px 16px 40px; }
+            .hero, .card { padding: 20px; }
+            .toolbar { flex-direction: column; align-items: flex-start; }
+            .hero-title { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <section class="hero">
+            <div class="pill-row">
+                <span class="pill">🐧 Linux Mastery Course</span>
+                <span class="pill">Cybersecurity Focus</span>
+                <span class="pill">Beginner → Intermediate+</span>
+            </div>
+            <h1 class="hero-title">Linux Mastery, Dark & Readable</h1>
+            <p class="hero-subtitle">All of your existing notes rendered beautifully in a focused dark theme. Everything remains intact; just easier to read, search, and navigate.</p>
+            <div class="stats">
+                <div class="stat">
+                    <p class="stat-label">Modules</p>
+                    <p class="stat-value">17 total</p>
+                </div>
+                <div class="stat">
+                    <p class="stat-label">Audience</p>
+                    <p class="stat-value">CSIT · Hackers · Admins</p>
+                </div>
+                <div class="stat">
+                    <p class="stat-label">Theme</p>
+                    <p class="stat-value">Low-glare night mode</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="toolbar">
+                <div class="badge">📒 Rendered Markdown</div>
+                <span class="hint">Tip: Press Ctrl+F to jump anywhere instantly.</span>
+            </div>
+            <article id="md-target" class="markdown">Loading course notes…</article>
+        </section>
+    </div>
+
+    <script id="md-source" type="text/markdown">
 # 🐧 Linux Mastery Course
 
-**by Loki & Shelly**
+### By [UnExplainableFish52](https://github.com/UnExplainableFish52) (Loki) 
 
 ---
 
@@ -71,27 +383,27 @@ Linux dominates the cybersecurity landscape:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                      USER SPACE                         │
+│                      USER SPACE                    │
 │  ┌─────────────────────────────────────────────────┐   │
-│  │   Applications (Firefox, Nmap, Metasploit)      │   │
+│  │   Applications (Firefox, Nmap, Metasploit)  │   │
 │  └─────────────────────────────────────────────────┘   │
 │  ┌─────────────────────────────────────────────────┐   │
-│  │   Shell (bash, zsh, sh)                         │   │
+│  │   Shell (bash, zsh, sh)                     │   │
 │  └─────────────────────────────────────────────────┘   │
 │  ┌─────────────────────────────────────────────────┐   │
-│  │   System Libraries (glibc, libssl)              │   │
-│  └─────────────────────────────────────────────────┘   │
-├─────────────────────────────────────────────────────────┤
-│                    KERNEL SPACE                         │
-│  ┌─────────────────────────────────────────────────┐   │
-│  │   System Call Interface                         │   │
-│  └─────────────────────────────────────────────────┘   │
-│  ┌─────────────────────────────────────────────────┐   │
-│  │   Kernel (Process, Memory, Device, FS, Network) │   │
+│  │   System Libraries (glibc, libssl)          |   │   
 │  └─────────────────────────────────────────────────┘   │
 ├─────────────────────────────────────────────────────────┤
-│                      HARDWARE                           │
-│         CPU  |  RAM  |  Disk  |  NIC  |  GPU            │
+│                    KERNEL SPACE                    │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │   System Call Interface                         │   
+│  └─────────────────────────────────────────────────┘   │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │   Kernel (Process, Memory, Device, FS, Network) │   
+│  └─────────────────────────────────────────────────┘   │
+├─────────────────────────────────────────────────────────┤
+│                      HARDWARE                      │
+│         CPU  |  RAM  |  Disk  |  NIC  |  GPU       │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -13741,10 +14053,39 @@ Congratulations! You've completed the Linux Mastery Course.
 
 # 🏆 Course Complete!
 
-**Linux Mastery Course by Loki & Shelly**
+**Linux Mastery Course by [UnExplainableFish52](https://github.com/UnExplainableFish52) (Loki)**
 
 You've covered 17 modules, from foundation to mastery. The commands and concepts in this course form the backbone of Linux administration and cybersecurity operations.
 
 **Remember:** The best way to learn is to practice. Break things, fix them, automate everything, and never stop exploring. 
 
 **Happy Hacking!** 🐧
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script>
+        const mdTarget = document.getElementById("md-target");
+        const mdSource = document.getElementById("md-source");
+
+        marked.setOptions({
+            gfm: true,
+            breaks: true,
+            highlight: function(code, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    return hljs.highlight(code, { language: lang }).value;
+                }
+                return hljs.highlightAuto(code).value;
+            }
+        });
+
+        mdTarget.innerHTML = marked.parse(mdSource.textContent);
+
+        // Apply highlighting to all code blocks
+        document.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightElement(block);
+        });
+    </script>
+</body>
+</html>
